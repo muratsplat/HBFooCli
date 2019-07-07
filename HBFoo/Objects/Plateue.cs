@@ -6,32 +6,41 @@ namespace HBFoo.Objects
 {
     class Plateue {
 
-        private Point upperRight;
+        private Point _upperRight;
         public Point UpperRight
         {
-            get { return upperRight; }
-            set { upperRight = value; }
+            get { return _upperRight; }
+            set { _upperRight = value; }
         }
 
-        private List<Rover> rovers = new List<Rover>();
-        
-
-        public Plateue(Point upperRight)
+        private Point _lowerLeft;
+        public Point LowerLeft
         {
-            UpperRight = upperRight;
+            get { return _lowerLeft; }
+            set { _lowerLeft = value; }
+        }
+        
+        private List<IRover> rovers = new List<IRover>();
+        
+        public Plateue(Point upperRight, Point lowerLeft)
+        {
+            _upperRight = upperRight;
+            _lowerLeft = lowerLeft;
         }
 
-        public void AddRover(Rover rover)
+        public IRover AddRover(IRover rover)
         {
             if (rovers.Exists( r => r.Equals(rover))) {
                 throw new Exception("it is already exist. ");
             }
             rovers.Add(rover);
+            return rover;
         }
 
-        public void Move(Guid id, string commands) 
+        public void Move(IRover rover, string commands) 
         {
-            var one = rovers.Find( r => r.ID.Equals(id));
+            // Todo: check the result
+            var one = rovers.Find( r => r.Equals(rover));
             // The possible letters are 'L', 'R' and 'M'. 'L' and 'R' makes the rover spin 90 degrees left or right respectively, 
             // without moving from its current spot. 'M' means move forward one grid point, and maintain the same heading.
             List<string> chars = new List<string>(commands.Split('\\'));
@@ -49,7 +58,13 @@ namespace HBFoo.Objects
                         throw new Exception(String.Format("'${}' command is unknown!", c));
                 }
             }
-        
         }
+        public void CallStation(IRover rover) 
+        {
+            // Todo: check the result
+            var one = rovers.Find( r => r.Equals(rover) );
+            rovers.Remove(one);
+        }
+        
     }  
 }

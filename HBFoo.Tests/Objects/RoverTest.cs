@@ -95,8 +95,7 @@ namespace HBFoo.Tests.Objects
             rover1.Move();
             rover1.Move();
             Assert.Equal("1 3 N", rover1.GetPosition());
-            
-
+    
             // Rover 2
             // 3 3 E
             // MM RM MR MR RM

@@ -1,8 +1,9 @@
 using HBFoo.Navigation;
 using System;
+
 namespace HBFoo.Objects
 {
-    public class Rover
+    public class Rover : IRover
     {
         public Rover(Point point, Compass compass) {
             Point = point;
