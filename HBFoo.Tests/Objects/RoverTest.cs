@@ -9,7 +9,7 @@ namespace HBFoo.Tests.Objects
     {
         public RoverTest()
         {
-            // new Rover();
+            new Rover(new Point(1, 1), Compass.Of(Directions.N));
         }
 
         [Fact]
@@ -17,7 +17,9 @@ namespace HBFoo.Tests.Objects
         {
             var rover1 = new Rover(new Point(1, 1), Compass.Of(Directions.N));
             var rover2 = new Rover(new Point(1, 1), Compass.Of(Directions.N));
-            Assert.True(rover1.Equals(rover2));
+            Assert.False(rover1.Equals(rover2));
+            
+            Assert.True(rover1.Equals(rover1));
 
             var rover3 = new Rover(new Point(1, 3), Compass.Of(Directions.N));
             var rover4 = new Rover(new Point(1, 2), Compass.Of(Directions.N));

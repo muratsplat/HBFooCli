@@ -25,6 +25,11 @@ namespace HBFoo.Navigation
             return new Compass((int)direction);
         }
 
+        public static Compass Of(int degree)
+        {
+            return new Compass(degree);
+        }
+
         public static Compass FromChar(string sembol)
         {
             switch (sembol)
@@ -51,9 +56,7 @@ namespace HBFoo.Navigation
             {
                 return false;
             }
-            
             var castTo = obj as Compass;
-
             return Value == castTo.Value;
         }
         
