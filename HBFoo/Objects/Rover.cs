@@ -9,6 +9,24 @@ namespace HBFoo.Objects
             Direction = compass;
             ID = Guid.NewGuid();
         }
+
+    /*
+        The first line of input is the upper-right coordinates of the plateau, 
+        the lower-left coordinates are assumed to be 0,0.
+     */
+        private Point upperRight;
+        public Point UpperRight
+        {
+            get { return upperRight; }
+            set { upperRight = value; }
+        }
+        
+        private Point lowerLeft;
+        public Point LowerLeft
+        {
+            get { return lowerLeft; }
+            set { lowerLeft = value; }
+        }
         private Point point;
         public Point Point
         {
@@ -59,7 +77,7 @@ namespace HBFoo.Objects
         public void TurnLeft()
         {
             if (Direction.Value == 0 ) {
-                Direction = Compass.Of(360 - 90);
+                Direction = new Compass(360 - 90);
                 return;
             }
             Direction = new Compass(Direction.Value - 90);
@@ -68,18 +86,41 @@ namespace HBFoo.Objects
         public void Move()
         {
            if (Direction.Equals(Compass.FromChar("N"))) {
-               Point.Y++;
+               if (UpperRight == null) {
+                    Point.Y++;
+               } else if ( Point.Y < UpperRight.Y ) {
+                    Point.Y++;
+               }
                return;
            }
+
            if (Direction.Equals(Compass.FromChar("S"))) {
-               Point.Y--;
+               if (LowerLeft == null) {
+                   Point.Y--;
+                } else if( Point.Y > LowerLeft.Y ) {
+                    Point.Y--;
+               }
                return;
            }
            if (Direction.Equals(Compass.FromChar("W"))) {
-               Point.X--;
+                if (LowerLeft == null) {
+                   Point.X--;
+                } else if ( Point.X > LowerLeft.X) {
+                   Point.X--;
+               }
                return;
            }
-           Point.X++;
+
+            if (UpperRight == null) {
+                Point.X++;
+                return;
+            } else if (Point.X < UpperRight.X) {
+               Point.X++;
+           }
+        }
+
+        public string GetPosition() {
+            return String.Format("{0} {1} {2}", Point.X, Point.Y, Direction.ToString());
         }
     }
 }
