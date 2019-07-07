@@ -43,10 +43,9 @@ namespace HBFoo.Objects
             var one = rovers.Find( r => r.Equals(rover));
             // The possible letters are 'L', 'R' and 'M'. 'L' and 'R' makes the rover spin 90 degrees left or right respectively, 
             // without moving from its current spot. 'M' means move forward one grid point, and maintain the same heading.
-            List<string> chars = new List<string>(commands.Split('\\'));
-            foreach (var c in chars)
+            foreach (var c in commands.ToCharArray())
             {
-                switch (c)
+                switch (Convert.ToString(c))
                 {
                     case "L": one.TurnLeft();
                         break;
@@ -54,8 +53,6 @@ namespace HBFoo.Objects
                         break;
                     case "M": one.Move();
                         break;
-                    default:
-                        throw new Exception(String.Format("'${}' command is unknown!", c));
                 }
             }
         }

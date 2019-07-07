@@ -1,15 +1,14 @@
 ﻿using System;
-using HBFoo.Navigation;
+using HBFoo.Command;
 
 namespace HBFoo
 {
     class Program
     {
     static void Main(string[] args)  {
-        Console.WriteLine("Hello World!");
-
-  
-
+          
+      var cmd = new CLI(Console.In, new Writer(Console.Out));
+      cmd.Start();
     } 
   }
 }

@@ -10,7 +10,7 @@ namespace HBFoo.Command
   public class CLI
   {
 
-    public CLI(TextReader input, TextWriter output)
+    public CLI(TextReader input, IWriter output)
     {
         _input = input;
         _output = output;
@@ -22,14 +22,14 @@ namespace HBFoo.Command
         set { _input = value; }
     }
 
-    private Regex plateue = new Regex(@"^(\d+)\s(\d+)$", RegexOptions.Compiled | RegexOptions.IgnoreCase); 
-    private Regex roverInit = new Regex(@"^(\d+)\s(\d+)\s([NSEW])$", RegexOptions.Compiled | RegexOptions.IgnoreCase); 
-    private Regex commands = new Regex(@"^([LRM]+)$", RegexOptions.Compiled | RegexOptions.IgnoreCase); 
+    private Regex plateue = new Regex(@"^\d$", RegexOptions.Compiled | RegexOptions.IgnoreCase); 
+    private Regex roverInit = new Regex(@"^\d{1}\s\d{1}\s[NEWS]", RegexOptions.Compiled | RegexOptions.IgnoreCase); 
+    private Regex commands = new Regex(@"^\w[LMR]", RegexOptions.Compiled | RegexOptions.IgnoreCase); 
     private Plateue mars;
 
 
-    private TextWriter _output;
-    public TextWriter Out
+    private IWriter _output;
+    public IWriter Out
     {
         get { return _output; }
         set { _output = value; }
@@ -42,13 +42,12 @@ namespace HBFoo.Command
 
         while (In.Peek() >= 0) 
         {
-            ++lineNumber;
+            lineNumber++;
             var line = In.ReadLine(); 
             // end of it
             if (line == null) {
                 break;
             }
-
             if (plateue.Match(line).Success || mars == null) {
                 var segment = line.Split(" ");
                 var x = Int32.Parse(segment[0]);
@@ -70,28 +69,19 @@ namespace HBFoo.Command
                 }
                 continue;
             }
-
             if (commands.Match(line).Success) {
-                List<string> cmds = new List<string>(line.Split('\\'));
-                if (lineNumber != 0 && lineNumber % 2 == 0 ) {
-                    var roverOrder = lineNumber /2;
-                    if (rovers.Count == 0) {
-                        throw new Exception("There is not rover which landed on mars!");
-                    }
-                    foreach (var cmd in cmds)
-                    {
-                        mars.Move(rovers[0], cmd);
-                    }
-
-                    Out.WriteLine(rovers[0].GetPosition());
-
-                    System.Console.Out.WriteLine(rovers[0].GetPosition());
-                    mars.CallStation(rovers[0]);
-                    rovers.Remove(rovers[0]);
-                    
+                if (rovers.Count == 0) {
+                    throw new Exception("There is not rover which landed on mars!");
                 }
+                mars.Move(rovers[0], line);
+
+                Out.WriteLine(rovers[0].GetPosition());
+                mars.CallStation(rovers[0]);
+                rovers.Remove(rovers[0]);
             }
         }
+
+        Out.Close();
     }
   }
 
