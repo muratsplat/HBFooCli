@@ -3,11 +3,11 @@
 ## Requirements
 * .NetCore 2.2 SDK
 
+
 ## How to run the app
 ```sh
 $ git clone git@github.com:muratsplat/HBFooCli.git
-$ cd HBFooCli
-$ ls 
+$ cd HBFoo
 $ cat ../input.txt |  dotnet run
 ```
 
